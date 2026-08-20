@@ -49,13 +49,15 @@ fun App(appContainer: AppContainer) {
         Box(Modifier.fillMaxSize()) {
             when (val state = initState) {
                 is InitState.Loading -> SplashScreen()
-                is InitState.Success -> Text(
-                    "Hola",
-                    modifier = Modifier.fillMaxSize(),
-                    textAlign = TextAlign.Center
-                )
+                is InitState.Success -> InitScreen()
                 is InitState.Error -> ErrorScreen(state.message, { retryTrigger++})
             }
         }
     }
+}
+
+@Composable
+fun InitScreen() {
+    var countExample by remember { mutableStateOf(0) }
+    ErrorScreen("Hola q tal $countExample", { countExample++ }, "Aumentar contador")
 }
