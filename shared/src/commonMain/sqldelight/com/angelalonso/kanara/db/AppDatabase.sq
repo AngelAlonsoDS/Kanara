@@ -1,0 +1,322 @@
+-- ============================================================
+-- ESQUEMA DE BASE DE DATOS v2 — Software clínico offline (MVP)
+-- Motor objetivo: SQLite (aplicación de escritorio local-first)
+-- Corregido según AUDITORÍA FINAL DEL ESQUEMA (ver .md adjunto)
+-- ============================================================
+-- Cambios respecto a v1 (resumen, ver auditoría para el detalle):
+-- 1. consultas: CHECK de consistencia de cierre + triggers de
+--    inmutabilidad tras cierre (UPDATE y DELETE bloqueados).
+-- 2. consultas.cita_id y signos_vitales.consulta_id ahora UNIQUE.
+-- 3. citas: índice único parcial para evitar doble-booking.
+-- 4. pacientes: columna curp (nullable, UNIQUE).
+-- 5. Nuevas tablas: alergias, ficha_clinica.
+-- 6. documentos: tamano_bytes, hash_integridad, mime_type, activo.
+-- 7. backups: alcance, version_app, version_esquema.
+-- 8. PRAGMA user_version se usa para versionar el esquema
+--    (ver nota al final del archivo).
+-- ============================================================
+
+-- PRAGMA foreign_keys = ON;
+
+-- ============================================================
+-- USUARIOS Y SEGURIDAD
+-- ============================================================
+
+CREATE TABLE usuarios (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre_completo TEXT NOT NULL,
+    usuario         TEXT NOT NULL UNIQUE,
+    password_hash   TEXT NOT NULL,
+    rol             TEXT NOT NULL DEFAULT 'medico'
+                        CHECK (rol IN ('admin', 'medico')),
+    activo          INTEGER NOT NULL DEFAULT 1,
+    creado_en       TEXT NOT NULL DEFAULT (datetime('now')),
+    actualizado_en  TEXT
+);
+
+CREATE TABLE sesiones (
+    id                      INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario_id              INTEGER NOT NULL REFERENCES usuarios(id),
+    inicio                  TEXT NOT NULL DEFAULT (datetime('now')),
+    fin                     TEXT,
+    cerrada_por_inactividad INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE registro_actividad (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario_id  INTEGER REFERENCES usuarios(id),
+    accion      TEXT NOT NULL,   -- 'crear_paciente', 'cerrar_consulta', 'restaurar_backup', etc.
+    entidad     TEXT,            -- 'paciente', 'consulta', 'cita', 'backup', ...
+    entidad_id  INTEGER,
+    detalle     TEXT,
+    fecha       TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX idx_actividad_fecha   ON registro_actividad(fecha);
+CREATE INDEX idx_actividad_usuario ON registro_actividad(usuario_id);
+
+-- ============================================================
+-- PACIENTES Y EXPEDIENTE
+-- ============================================================
+
+CREATE TABLE pacientes (
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre            TEXT NOT NULL,
+    apellido_paterno  TEXT NOT NULL,
+    apellido_materno  TEXT,
+    sexo              TEXT NOT NULL CHECK (sexo IN ('M', 'F', 'O')),
+    fecha_nacimiento  TEXT NOT NULL,   -- 'YYYY-MM-DD'
+    curp              TEXT UNIQUE,     -- opcional; identificador nacional, reduce duplicados
+    telefono          TEXT,
+    email             TEXT,
+    direccion         TEXT,
+    fecha_registro    TEXT NOT NULL DEFAULT (datetime('now')),
+    activo            INTEGER NOT NULL DEFAULT 1,  -- 0 = archivado, no eliminado
+    creado_por        INTEGER REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_pacientes_nombre         ON pacientes(apellido_paterno, apellido_materno, nombre);
+CREATE INDEX idx_pacientes_fecha_registro ON pacientes(fecha_registro);
+CREATE INDEX idx_pacientes_sexo           ON pacientes(sexo);
+
+-- Antecedentes narrativos (heredofamiliares, patológicos, no
+-- patológicos, cirugías, hospitalizaciones, traumatismos,
+-- transfusiones). Las alergias NO viven aquí (ver tabla aparte):
+-- son un dato de seguridad del paciente que necesita visibilidad
+-- propia, no perderse entre filas de otro tipo.
+CREATE TABLE antecedentes (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    paciente_id     INTEGER NOT NULL REFERENCES pacientes(id),
+    tipo            TEXT NOT NULL CHECK (tipo IN (
+                        'heredofamiliar',
+                        'personal_patologico',
+                        'personal_no_patologico',
+                        'quirurgico',
+                        'hospitalizacion',
+                        'traumatismo',
+                        'transfusion',
+                        'otro'
+                    )),
+    descripcion     TEXT NOT NULL,
+    fecha_registro  TEXT NOT NULL DEFAULT (datetime('now')),
+    registrado_por  INTEGER REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_antecedentes_paciente ON antecedentes(paciente_id);
+
+-- Alergias: tabla propia porque es información de seguridad
+-- crítica que debe ser inmediatamente visible, no un antecedente
+-- más entre muchos.
+CREATE TABLE alergias (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    paciente_id     INTEGER NOT NULL REFERENCES pacientes(id),
+    sustancia       TEXT NOT NULL,
+    reaccion        TEXT,
+    severidad       TEXT CHECK (severidad IN ('leve', 'moderada', 'grave', 'desconocida')),
+    fecha_registro  TEXT NOT NULL DEFAULT (datetime('now')),
+    registrado_por  INTEGER REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_alergias_paciente ON alergias(paciente_id);
+
+-- Ficha clínica estructurada, 1 a 1 con el paciente. Campos que
+-- necesitan búsqueda/filtro exacto (no texto libre) y que no
+-- cambian con cada consulta, a diferencia de los signos vitales.
+CREATE TABLE ficha_clinica (
+    paciente_id             INTEGER PRIMARY KEY REFERENCES pacientes(id),
+    grupo_sanguineo         TEXT CHECK (grupo_sanguineo IN
+                                ('O+','O-','A+','A-','B+','B-','AB+','AB-','desconocido')),
+    tabaquismo              TEXT CHECK (tabaquismo IN ('nunca','activo','exfumador','desconocido')),
+    alcoholismo             TEXT CHECK (alcoholismo IN ('nunca','ocasional','frecuente','desconocido')),
+    toxicomanias            TEXT,   -- texto libre: sustancia(s) referidas, si aplica
+    -- Campos gineco-obstétricos: solo tienen sentido si pacientes.sexo = 'F',
+    -- pero se dejan nullable para no forzar un modelo separado por sexo.
+    menarca_edad            INTEGER,
+    gestas                  INTEGER,
+    partos                  INTEGER,
+    cesareas                INTEGER,
+    abortos                  INTEGER,
+    metodo_anticonceptivo   TEXT,
+    actualizado_en          TEXT NOT NULL DEFAULT (datetime('now')),
+    actualizado_por         INTEGER REFERENCES usuarios(id)
+);
+
+-- ============================================================
+-- AGENDA
+-- ============================================================
+
+CREATE TABLE citas (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    paciente_id         INTEGER NOT NULL REFERENCES pacientes(id),
+    medico_id           INTEGER NOT NULL REFERENCES usuarios(id),
+    fecha               TEXT NOT NULL,   -- 'YYYY-MM-DD'
+    hora_inicio         TEXT NOT NULL,   -- 'HH:MM'
+    hora_fin            TEXT,
+    motivo              TEXT,
+    estado              TEXT NOT NULL DEFAULT 'agendada'
+                            CHECK (estado IN ('agendada', 'completada', 'cancelada', 'no_asistio')),
+    motivo_cancelacion  TEXT,
+    notas               TEXT,
+    creado_en           TEXT NOT NULL DEFAULT (datetime('now')),
+    creado_por          INTEGER REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_citas_fecha    ON citas(fecha, hora_inicio);
+CREATE INDEX idx_citas_paciente ON citas(paciente_id);
+
+-- Evita agendar dos citas al mismo médico en el mismo horario.
+-- Es un índice parcial: solo aplica a citas activas ('agendada'),
+-- una cita cancelada no debe seguir bloqueando ese horario.
+CREATE UNIQUE INDEX idx_citas_no_traslape
+    ON citas(medico_id, fecha, hora_inicio)
+    WHERE estado = 'agendada';
+
+-- ============================================================
+-- CONSULTAS
+-- ============================================================
+
+CREATE TABLE consultas (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    paciente_id         INTEGER NOT NULL REFERENCES pacientes(id),
+    medico_id           INTEGER NOT NULL REFERENCES usuarios(id),
+    cita_id             INTEGER UNIQUE REFERENCES citas(id),  -- 1 cita -> 0..1 consulta
+    fecha               TEXT NOT NULL DEFAULT (datetime('now')),  -- fecha/hora de inicio de atención
+    motivo              TEXT,
+    interrogatorio      TEXT,
+    exploracion_fisica  TEXT,
+    diagnostico         TEXT,
+    tratamiento         TEXT,
+    plan                TEXT,
+    pronostico          TEXT,
+    estado              TEXT NOT NULL DEFAULT 'abierta'
+                            CHECK (estado IN ('abierta', 'cerrada')),
+    fecha_cierre        TEXT,
+    firmada_por         INTEGER REFERENCES usuarios(id),
+    -- Una consulta cerrada DEBE tener fecha de cierre y firma.
+    -- Una consulta abierta NO debe tenerlas todavía.
+    CHECK (
+        (estado = 'abierta'  AND fecha_cierre IS NULL     AND firmada_por IS NULL)
+        OR
+        (estado = 'cerrada'  AND fecha_cierre IS NOT NULL AND firmada_por IS NOT NULL)
+    )
+);
+
+CREATE INDEX idx_consultas_paciente ON consultas(paciente_id);
+CREATE INDEX idx_consultas_fecha    ON consultas(fecha);
+
+-- Inmutabilidad real de las consultas cerradas: esto es lo que
+-- hace que "notas_correccion" tenga sentido en vez de ser
+-- decorativa. Sin estos triggers, cualquiera puede editar el
+-- registro original en vez de usar el mecanismo de corrección.
+CREATE TRIGGER trg_consultas_bloquear_update_cerrada
+BEFORE UPDATE ON consultas
+WHEN old.estado = 'cerrada'
+BEGIN
+    SELECT RAISE(ABORT, 'No se puede modificar una consulta cerrada. Usa notas_correccion.');
+END;
+
+CREATE TRIGGER trg_consultas_bloquear_delete_cerrada
+BEFORE DELETE ON consultas
+WHEN old.estado = 'cerrada'
+BEGIN
+    SELECT RAISE(ABORT, 'No se puede eliminar una consulta cerrada.');
+END;
+-- Nota: SÍ se permite borrar una consulta mientras estado='abierta'
+-- (por ejemplo, si se creó por error para el paciente equivocado
+-- y aún no se ha cerrado/firmado). Una vez cerrada, es definitiva.
+
+CREATE TABLE signos_vitales (
+    id                       INTEGER PRIMARY KEY AUTOINCREMENT,
+    consulta_id              INTEGER NOT NULL UNIQUE REFERENCES consultas(id),  -- 1 consulta -> 0..1 signos vitales
+    presion_arterial         TEXT,     -- ej. '120/80'
+    frecuencia_cardiaca      INTEGER,  -- lpm
+    frecuencia_respiratoria  INTEGER,  -- rpm
+    temperatura              REAL,     -- °C
+    peso                     REAL,     -- kg
+    talla                    REAL,     -- cm
+    saturacion_oxigeno       INTEGER   -- %
+);
+
+-- Corrección/aclaración de una consulta ya cerrada.
+-- El registro original de "consultas" nunca se modifica
+-- (garantizado ahora por los triggers de arriba).
+CREATE TABLE notas_correccion (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    consulta_id  INTEGER NOT NULL REFERENCES consultas(id),
+    contenido    TEXT NOT NULL,
+    fecha        TEXT NOT NULL DEFAULT (datetime('now')),
+    medico_id    INTEGER NOT NULL REFERENCES usuarios(id)
+);
+
+-- ============================================================
+-- DOCUMENTOS
+-- ============================================================
+
+CREATE TABLE documentos (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    paciente_id     INTEGER NOT NULL REFERENCES pacientes(id),
+    consulta_id     INTEGER REFERENCES consultas(id),  -- NULL si no está ligado a una consulta específica
+    nombre_archivo  TEXT NOT NULL,
+    ruta_archivo    TEXT NOT NULL,
+    tipo            TEXT,     -- 'estudio_laboratorio', 'imagen', 'receta', 'otro'
+    tamano_bytes    INTEGER,
+    hash_integridad TEXT,     -- sha256 del archivo, para detectar corrupción/alteración
+    mime_type       TEXT,
+    fecha_subida    TEXT NOT NULL DEFAULT (datetime('now')),
+    subido_por      INTEGER REFERENCES usuarios(id),
+    activo          INTEGER NOT NULL DEFAULT 1  -- archivar, no borrar: puede ser evidencia clínica
+);
+
+CREATE INDEX idx_documentos_paciente ON documentos(paciente_id);
+
+-- ============================================================
+-- RESPALDOS
+-- ============================================================
+
+CREATE TABLE backups (
+    id               INTEGER PRIMARY KEY AUTOINCREMENT,
+    tipo             TEXT NOT NULL CHECK (tipo IN ('manual', 'automatico')),
+    alcance          TEXT NOT NULL DEFAULT 'bd_y_documentos'
+                         CHECK (alcance IN ('solo_bd', 'bd_y_documentos')),
+    ruta_archivo     TEXT NOT NULL,
+    tamano_bytes     INTEGER,
+    hash_integridad  TEXT,
+    version_app      TEXT,   -- versión de la aplicación que generó el backup
+    version_esquema  INTEGER,-- ver PRAGMA user_version al final de este archivo
+    fecha            TEXT NOT NULL DEFAULT (datetime('now')),
+    estado           TEXT NOT NULL DEFAULT 'completado'
+                         CHECK (estado IN ('completado', 'fallido')),
+    creado_por       INTEGER REFERENCES usuarios(id)
+);
+
+-- ============================================================
+-- VISTA DE APOYO — soporta los filtros del panel de pacientes
+-- (nombre, fecha de registro, fecha de última cita, sexo, edad)
+-- ============================================================
+
+CREATE VIEW vista_pacientes_resumen AS
+SELECT
+    p.id,
+    p.nombre || ' ' || p.apellido_paterno ||
+        COALESCE(' ' || p.apellido_materno, '') AS nombre_completo,
+    p.sexo,
+    CAST((julianday('now') - julianday(p.fecha_nacimiento)) / 365.25 AS INTEGER) AS edad,
+    p.fecha_registro,
+    (
+        SELECT MAX(c.fecha)
+        FROM citas c
+        WHERE c.paciente_id = p.id AND c.estado = 'completada'
+    ) AS fecha_ultima_cita
+FROM pacientes p
+WHERE p.activo = 1;
+
+-- ============================================================
+-- VERSIONADO DE ESQUEMA
+-- ============================================================
+-- El versionado se maneja automáticamente por SQLDelight a
+-- través de JdbcSqliteDriver(schema = AppDatabase.Schema) en
+-- DatabaseDriverFactory (jvmMain). No se declara PRAGMA user_version
+-- manualmente aquí — el driver la gestiona al crear/migrar.
+-- Cuando se necesite la primera migración real, se agrega un
+-- archivo .sqm en esta misma carpeta (ver documentación de
+-- SQLDelight: "Migration Schema").
