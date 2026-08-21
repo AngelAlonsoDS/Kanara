@@ -1,4 +1,4 @@
-package com.angelalonso.kanara.error
+package com.angelalonso.kanara.core.error
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

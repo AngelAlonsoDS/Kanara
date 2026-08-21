@@ -1,4 +1,4 @@
-package com.angelalonso.kanara.utils
+package com.angelalonso.kanara.core.utils
 
 sealed interface InitState {
     data object Loading : InitState
