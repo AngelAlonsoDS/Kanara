@@ -1,5 +1,5 @@
 package com.angelalonso.kanara.core.utils
 
-enum class Sex {
+enum class Gender {
     MALE, FEMALE, OTHER
 }

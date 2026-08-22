@@ -2,6 +2,11 @@ package com.angelalonso.kanara.core.models
 
 import java.time.LocalDate
 
+/**
+ * Credenciales del usuario
+ * @param usuario nombre del usuario registrado
+ * @param password contraseña sin hash
+ */
 data class UserCredentials(val usuario: String, val password: String)
 
 data class UserDTO(
