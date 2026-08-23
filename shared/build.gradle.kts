@@ -27,6 +27,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("app.cash.sqldelight:sqlite-driver:2.0.2")
+                implementation("at.favre.lib:bcrypt:0.10.2")
             }
         }
     }

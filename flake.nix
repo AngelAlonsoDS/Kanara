@@ -19,6 +19,7 @@
             jdk
             pkgs.gradle_9
             pkgs.kotlin
+            pkgs.sqlite
 
             pkgs.libGL
             pkgs.xorg.libX11

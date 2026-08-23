@@ -1,8 +1,8 @@
-package com.angelalonso.kanara.modules.patients
+package com.angelalonso.kanara.features.patients
 
 import com.angelalonso.kanara.db.AppDatabase
 
-class PatientController {
+class PatientService {
     var database: AppDatabase
 
     constructor(database: AppDatabase){

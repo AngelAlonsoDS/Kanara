@@ -5,10 +5,11 @@
 -- confirmados empíricamente contra el parser de SQLDelight 2.3.2:
 --   - old/new deben ir en minúscula dentro de triggers (WHEN y cuerpo).
 --   - falta CHECK(hora_fin > hora_inicio) en citas.
--- ============================================================
-
-PRAGMA foreign_keys = ON;
-
+-- Nota: PRAGMA foreign_keys se ejecuta en cada conexión desde
+-- DatabaseDriverFactory (jvmMain), vía driver.execute() directo
+-- a JDBC — no aquí. El compilador de SQLDelight es más estricto
+-- que SQLite real y no acepta ON/OFF como valor de pragma, solo
+-- literales numéricos, así que no vale la pena declararla aquí.
 -- ============================================================
 -- USUARIOS Y SEGURIDAD
 -- ============================================================
@@ -350,3 +351,71 @@ WHERE p.activo = 1;
 -- ============================================================
 -- No se fija PRAGMA user_version aquí. JdbcSqliteDriver(schema = ...)
 -- en DatabaseDriverFactory (jvmMain) lo gestiona automáticamente.
+
+selectByUsuario:
+SELECT * FROM usuarios WHERE usuario = ? AND activo = 1;
+
+selectById:
+SELECT * FROM usuarios WHERE id = ?;
+
+selectActivos:
+SELECT * FROM usuarios WHERE activo = 1 ORDER BY nombre_completo;
+
+insertUsuario:
+INSERT INTO usuarios(nombre_completo, usuario, password_hash, rol)
+VALUES (?, ?, ?, ?)
+RETURNING *;
+
+updatePasswordHash:
+UPDATE usuarios
+SET password_hash = ?, actualizado_en = datetime('now')
+WHERE id = ?;
+
+desactivarUsuario:
+UPDATE usuarios
+SET activo = 0, actualizado_en = datetime('now')
+WHERE id = ?;
+
+reactivarUsuario:
+UPDATE usuarios
+SET activo = 1, actualizado_en = datetime('now')
+WHERE id = ?;
+
+selectPacienteById:
+SELECT * FROM pacientes WHERE id = ?;
+
+selectPacientesActivos:
+SELECT * FROM pacientes WHERE activo = 1 ORDER BY apellido_paterno, apellido_materno, nombre;
+
+selectPacientesArchivados:
+SELECT * FROM pacientes WHERE activo = 0 ORDER BY apellido_paterno, apellido_materno, nombre;
+
+selectPacienteByCurp:
+SELECT * FROM pacientes WHERE curp = ?;
+
+buscarPacientesActivos:
+SELECT * FROM vista_pacientes_resumen
+WHERE nombre_completo LIKE '%' || ? || '%'
+ORDER BY nombre_completo;
+
+insertPaciente:
+INSERT INTO pacientes(
+    nombre, apellido_paterno, apellido_materno, sexo, fecha_nacimiento,
+    lugar_nacimiento, curp, escolaridad, ocupacion, estado_civil, religion,
+    telefono, email, direccion, creado_por
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+RETURNING *;
+
+updatePaciente:
+UPDATE pacientes SET
+    nombre = ?, apellido_paterno = ?, apellido_materno = ?, sexo = ?,
+    fecha_nacimiento = ?, lugar_nacimiento = ?, curp = ?, escolaridad = ?,
+    ocupacion = ?, estado_civil = ?, religion = ?, telefono = ?, email = ?,
+    direccion = ?
+WHERE id = ?;
+
+archivarPaciente:
+UPDATE pacientes SET activo = 0 WHERE id = ?;
+
+reactivarPaciente:
+UPDATE pacientes SET activo = 1 WHERE id = ?;
