@@ -24,11 +24,11 @@
             pkgs.libGL
             pkgs.mesa
             pkgs.libx11
-            pkgs.libxest
+            pkgs.libxext
             pkgs.libxi
-            pkgs.libxrand
-            pkgs.libXrender
-            pkgs.libXtst
+            pkgs.libxrandr
+            pkgs.libxrender
+            pkgs.libxtst
             pkgs.libxcursor
             pkgs.libxcomposite
 
@@ -42,12 +42,19 @@
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
             pkgs.libGL
-            pkgs.xorg.libX11
-            pkgs.xorg.libXrender
-            pkgs.xorg.libXtst
-            pkgs.xorg.libXi
+            pkgs.mesa
+            pkgs.libx11
+            pkgs.libxext
+            pkgs.libxi
+            pkgs.libxrandr
+            pkgs.libxrender
+            pkgs.libxtst
+            pkgs.libxcursor
+            pkgs.libxcomposite
+
             pkgs.fontconfig
             pkgs.freetype
+            pkgs.glib
           ];
 
           shellHook = ''
