@@ -22,12 +22,19 @@
             pkgs.sqlite
 
             pkgs.libGL
-            pkgs.xorg.libX11
-            pkgs.xorg.libXrender
-            pkgs.xorg.libXtst
-            pkgs.xorg.libXi
+            pkgs.mesa
+            pkgs.libx11
+            pkgs.libxest
+            pkgs.libxi
+            pkgs.libxrand
+            pkgs.libXrender
+            pkgs.libXtst
+            pkgs.libxcursor
+            pkgs.libxcomposite
+
             pkgs.fontconfig
             pkgs.freetype
+            pkgs.glib
           ];
 
           JAVA_HOME = "${jdk.home}";
