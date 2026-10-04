@@ -22,13 +22,13 @@ val Success = Color(0xFF3B8F24) // Verde
 val OnSuccess = Color(0xFF30801A)
 
 
-val Surface = Color(0xFFFFF9EA) // Fondo crema claro
-val OnSurface = Color(0xFFFFF0C9)
+val Background = Color(0xFFFFF0C9) // Fondo crema claro
+val Surface = Color(0xFFF9F2E7)
 
 val TextBody = Color(0xFF22232A) // Gris oscuro
 val OnTextBody = Color(0xFF000000)
 
-val TextButton = Color(0xFFFFF9EA) // Color del fondo TODO: Separado del color Surface para posible rediseño
+val TextButton = Color(0xFFFFF0C9) // Color del fondo TODO: Separado del color Surface para posible rediseño
 val OnTextButton = Color(0xFFDFD7BF)
 
 private val LightColorScheme = lightColorScheme(

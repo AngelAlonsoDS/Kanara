@@ -1,13 +1,17 @@
 package com.angelalonso.kanara
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.angelalonso.kanara.core.error.ErrorScreen
 import com.angelalonso.kanara.core.utils.InitState
 import com.angelalonso.kanara.features.auth.ui.LoginScreen
 import com.angelalonso.kanara.theme.AppTheme
+import com.angelalonso.kanara.theme.Background
 
 @Composable
 // @Preview
@@ -26,7 +30,10 @@ fun App(appContainer: AppContainer) {
             }
         }
 
-        Box(Modifier.fillMaxSize()) {
+        Box(
+            Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center
+        ) {
             when (val state = initState) {
                 is InitState.Loading -> SplashScreen()
                 is InitState.Success -> LoginScreen(appContainer.authService)

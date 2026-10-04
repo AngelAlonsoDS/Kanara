@@ -20,11 +20,14 @@
           };
         };
 
-        # JDK elegido para TODO el entorno: Gradle, Kotlin CLI e IntelliJ deben
-        # apuntar al mismo JDK para evitar builds inconsistentes.
-        # temurin-bin (Eclipse Adoptium) es la distribución de OpenJDK más usada
-        # en builds de Gradle/Kotlin y la recomendada por Gradle/JetBrains.
-        jdk = pkgs.temurin-bin-21;
+        # El proyecto declara en gradle/gradle-daemon-jvm.properties que su
+        # Daemon JVM debe ser Java 25, vendor "Azul Zulu" (feature de Gradle
+        # 9: Daemon JVM auto-discovery/provisioning). Si el JDK del flake no
+        # coincide EXACTAMENTE en versión+vendor, Gradle intentará
+        # auto-descargar el JDK correcto por internet en cada máquina,
+        # rompiendo la reproducibilidad. Por eso usamos zulu (no temurin-bin)
+        # y en la versión 25.
+        jdk = pkgs.zulu25;
 
         # ------------------------------------------------------------------
         # Gradle 9.0.0 empaquetado a mano vía fetchurl, en vez de usar
@@ -63,7 +66,10 @@
             runHook preInstall
 
             mkdir -p $out
-            cp -r gradle-${version}/* $out/
+            # El unpackPhase de Nix ya nos deja parados DENTRO del único
+            # directorio raíz del zip (gradle-${version}/), así que copiamos
+            # el contenido del cwd actual, no "gradle-${version}/*".
+            cp -r . "$out"/
 
             # El script `bin/gradle` detecta Java vía JAVA_HOME/PATH en tiempo
             # de ejecución; lo wrappeamos para que siempre use el JDK fijado
@@ -83,17 +89,7 @@
           };
         };
 
-        # ------------------------------------------------------------------
-        # Librerías nativas que Compose Desktop (Skiko/Skia) y AWT/Swing
-        # cargan dinámicamente en tiempo de ejecución vía JNI.
-        #
-        # IMPORTANTE: estas NO son herramientas que se invoquen desde la
-        # terminal, así que NO van en `packages` (eso solo resuelve PATH).
-        # La JVM las busca vía LD_LIBRARY_PATH, así que se inyectan
-        # explícitamente ahí con `lib.makeLibraryPath` más abajo.
-        # ------------------------------------------------------------------
         runtimeLibs = with pkgs; [
-          sqlite
           libGL
           # mesa            # solo si libGL no basta (drivers de software/Vulkan);
                              # agrega bastante peso al store, déjalo comentado
@@ -109,56 +105,28 @@
           fontconfig
           freetype
           glib
+          stdenv.cc.cc.lib
         ];
 
       in
       {
         devShells.default = pkgs.mkShell {
-          # "packages" es el nombre moderno recomendado por mkShell (alias de
-          # nativeBuildInputs). Se usa para herramientas que se EJECUTAN dentro
-          # del shell (compiladores, build tools, CLIs), no para librerías que
-          # se enlazan en un artefacto final. Como este devShell no produce un
-          # derivation con binarios enlazados contra libs de sistema, no
-          # necesitamos buildInputs aquí.
           packages = [
             jdk
-
-            # Kotlin CLI (kotlinc, kotlin, kotlin-dce-js, etc.). Útil para usar
-            # el compilador/REPL fuera de Gradle y para que kotlinc coincida
-            # con la versión del plugin de Gradle del proyecto. No es
-            # estrictamente necesario si solo usarás el Kotlin Gradle Plugin
-            # a través de ./gradlew, pero es liviano y conveniente tenerlo.
             pkgs.kotlin
-
-            # Gradle 9.0.0 real, empaquetado directamente desde el binario
-            # oficial (ver definición de `gradle9` más arriba). Reemplaza al
-            # `pkgs.gradle`/`pkgs.gradle_9` de nixpkgs para evitar el desfase
-            # de versión entre nixpkgs y el canal del sistema.
+            pkgs.sqlite
             gradle9
 
             # IDE. Ver sección "IntelliJ IDEA" en la explicación: esta es la
             # opción reproducible vía Nix; alternativa: JetBrains Toolbox
             # fuera de Nix si preferís autoactualización.
             # pkgs.jetbrains.idea-community
-
             # pkgs.git
           ];
 
-          # JAVA_HOME apuntando exactamente al mismo derivation de JDK que se
-          # usa en "packages", para que Gradle, kotlinc e IntelliJ (si se
-          # configura para usarlo) resuelvan el mismo JDK.
-          #
-          # IMPORTANTE: NO hardcodear la ruta interna (ej. "${jdk}/lib/openjdk"):
-          # el layout interno de cada paquete JDK puede variar. La forma
-          # correcta y estable es usar el atributo `passthru.home` que TODOS
-          # los JDKs de nixpkgs exponen justamente para este propósito.
           JAVA_HOME = "${jdk.home}";
           JDK_HOME = "${jdk.home}";  # algunas herramientas usan JDK_HOME en vez de JAVA_HOME
 
-          # Esto es lo que realmente le permite a Skiko/AWT encontrar libGL,
-          # libX11, fontconfig, etc. en tiempo de ejecución dentro de NixOS.
-          # Sin esto, tenerlas en `packages` no sirve de nada para Compose
-          # Desktop (ver nota arriba en `runtimeLibs`).
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath runtimeLibs;
 
           shellHook = ''

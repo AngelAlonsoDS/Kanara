@@ -7,22 +7,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF243B8F),
+    primary = Primary,
     onPrimary = Color.White,
 
-    secondary = Color(0xFF24718F),
+    secondary = Secondary,
     onSecondary = Color.White,
 
-    tertiary = Color(0xFFB6B1AA),
+    tertiary = Tertiary,
     onTertiary = Color(0xFF35373F),
 
-    error = Color(0xFF8F243B),
+    error = Error,
     onError = Color.White,
 
-    background = Color(0xFFFFF9EA),
+    background = Background,
     onBackground = Color(0xFF22232A),
 
-    surface = Color(0xFFFFF9EA),
+    surface = Surface,
     onSurface = Color(0xFF22232A),
 )
 
