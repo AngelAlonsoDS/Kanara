@@ -37,19 +37,19 @@ NIX_BINTOOLS='/nix/store/25771zf6h2dryp8d3i65gyg17mmphy9v-binutils-wrapper-2.46'
 export NIX_BINTOOLS
 NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_BUILD_CORES='2'
+NIX_BUILD_CORES='6'
 export NIX_BUILD_CORES
 NIX_CC='/nix/store/c7c0yarb87cv4jxlyr02dxryrlmyi232-gcc-wrapper-15.2.0'
 export NIX_CC
 NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_CFLAGS_COMPILE=' -frandom-seed=ygl99haqvp -isystem /nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/include -isystem /nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8/include -isystem /nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev/include -isystem /nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/include -isystem /nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8/include -isystem /nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev/include'
+NIX_CFLAGS_COMPILE=' -frandom-seed=i01pfnqbzv -isystem /nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/include -isystem /nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8/include -isystem /nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev/include -isystem /nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/include -isystem /nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8/include -isystem /nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev/include'
 export NIX_CFLAGS_COMPILE
 NIX_ENFORCE_NO_NATIVE='1'
 export NIX_ENFORCE_NO_NATIVE
 NIX_HARDENING_ENABLE='bindnow format fortify fortify3 libcxxhardeningfast pic relro stackclashprotection stackprotector strictflexarrays1 strictoverflow zerocallusedregs'
 export NIX_HARDENING_ENABLE
-NIX_LDFLAGS='-rpath /home/alonso/Documents/Organizations/AngelAlonsoDS/Kanara/outputs/out/lib  -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib'
+NIX_LDFLAGS='-rpath /home/alonso/Documentos/Organizations/AngelAlonsoDS/Kanara/outputs/out/lib  -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib'
 export NIX_LDFLAGS
 NIX_NO_SELF_RPATH='1'
 NIX_STORE='/nix/store'
@@ -64,7 +64,7 @@ OLDPWD=''
 export OLDPWD
 OPTERR='1'
 OSTYPE='linux-gnu'
-PATH='/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/bin:/nix/store/rjpjb5fl3jnhrck00a09pjwpw3j0zf5y-kotlin-2.3.21/bin:/nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8/bin:/nix/store/986gncymgny2hzjndz0nhv94kvp66sja-sqlite-3.51.2-bin/bin:/nix/store/zhfc14cnh29wlvl6q87hrv8691b9kpcd-gradle-9.0.0/bin:/nix/store/4vyxba4g4palzf88c3ibbabzagqhlrj8-patchelf-0.15.2/bin:/nix/store/c7c0yarb87cv4jxlyr02dxryrlmyi232-gcc-wrapper-15.2.0/bin:/nix/store/2limljgc50jy76vg388ldgggcjhhkhav-gcc-15.2.0/bin:/nix/store/lzi4zg1ngjwqfjs0wyjf6bwrcl814mxb-glibc-2.42-67-bin/bin:/nix/store/gph17gb73p6qbrqqjnypfjj5npf0ldyx-coreutils-9.11/bin:/nix/store/25771zf6h2dryp8d3i65gyg17mmphy9v-binutils-wrapper-2.46/bin:/nix/store/7fpa17hpgqqs084lk08j0mwmc5xpbyf4-binutils-2.46/bin:/nix/store/gph17gb73p6qbrqqjnypfjj5npf0ldyx-coreutils-9.11/bin:/nix/store/jwq26byp7q4mxqg3yqqq4vgsabs7yknm-findutils-4.10.0/bin:/nix/store/9gjcj4ndp2akrqx108qwb56jzc7y7zrk-diffutils-3.12/bin:/nix/store/svl89366pvzz5s3myh1fjniz9l0x17fh-gnused-4.10/bin:/nix/store/sacz532zgiacvg7mva9v6gbfmyw427i3-gnugrep-3.12/bin:/nix/store/m7wg7cj2vw3n6a0pcl3fzbqfm0qsawmd-gawk-5.4.1/bin:/nix/store/c7g9dm6l2s33v60k8r6y7p1bc0vxd2ww-gnutar-1.35/bin:/nix/store/2722ncq58c1amdv6g6nv5d1wvab30p0r-gzip-1.14/bin:/nix/store/7mx2y4jcvcninami5vic5hz703ylrhnp-bzip2-1.0.8-bin/bin:/nix/store/9wyldz5qids294k9h5qcg1f72i52jidi-gnumake-4.4.1/bin:/nix/store/rzl7zd3zx56vl7m55x1l49sr4xx2bb7y-bash-5.3p9/bin:/nix/store/6w1adb545ayza5syyj4d6xscgn66jcws-patch-2.8/bin:/nix/store/ag994bfxf4wg90nv66y2j18djc5v34cc-xz-5.8.3-bin/bin:/nix/store/qicb9wk67c30wwplxlpx3a2f44bzrmmm-file-5.47/bin'
+PATH='/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/bin:/nix/store/rjpjb5fl3jnhrck00a09pjwpw3j0zf5y-kotlin-2.3.21/bin:/nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8/bin:/nix/store/986gncymgny2hzjndz0nhv94kvp66sja-sqlite-3.51.2-bin/bin:/nix/store/b7kaqaz4ws11yvgwxyc1x6dpzklg821v-gradle-9.8.0/bin:/nix/store/4vyxba4g4palzf88c3ibbabzagqhlrj8-patchelf-0.15.2/bin:/nix/store/c7c0yarb87cv4jxlyr02dxryrlmyi232-gcc-wrapper-15.2.0/bin:/nix/store/2limljgc50jy76vg388ldgggcjhhkhav-gcc-15.2.0/bin:/nix/store/lzi4zg1ngjwqfjs0wyjf6bwrcl814mxb-glibc-2.42-67-bin/bin:/nix/store/gph17gb73p6qbrqqjnypfjj5npf0ldyx-coreutils-9.11/bin:/nix/store/25771zf6h2dryp8d3i65gyg17mmphy9v-binutils-wrapper-2.46/bin:/nix/store/7fpa17hpgqqs084lk08j0mwmc5xpbyf4-binutils-2.46/bin:/nix/store/gph17gb73p6qbrqqjnypfjj5npf0ldyx-coreutils-9.11/bin:/nix/store/jwq26byp7q4mxqg3yqqq4vgsabs7yknm-findutils-4.10.0/bin:/nix/store/9gjcj4ndp2akrqx108qwb56jzc7y7zrk-diffutils-3.12/bin:/nix/store/svl89366pvzz5s3myh1fjniz9l0x17fh-gnused-4.10/bin:/nix/store/sacz532zgiacvg7mva9v6gbfmyw427i3-gnugrep-3.12/bin:/nix/store/m7wg7cj2vw3n6a0pcl3fzbqfm0qsawmd-gawk-5.4.1/bin:/nix/store/c7g9dm6l2s33v60k8r6y7p1bc0vxd2ww-gnutar-1.35/bin:/nix/store/2722ncq58c1amdv6g6nv5d1wvab30p0r-gzip-1.14/bin:/nix/store/7mx2y4jcvcninami5vic5hz703ylrhnp-bzip2-1.0.8-bin/bin:/nix/store/9wyldz5qids294k9h5qcg1f72i52jidi-gnumake-4.4.1/bin:/nix/store/rzl7zd3zx56vl7m55x1l49sr4xx2bb7y-bash-5.3p9/bin:/nix/store/6w1adb545ayza5syyj4d6xscgn66jcws-patch-2.8/bin:/nix/store/ag994bfxf4wg90nv66y2j18djc5v34cc-xz-5.8.3-bin/bin:/nix/store/qicb9wk67c30wwplxlpx3a2f44bzrmmm-file-5.47/bin'
 export PATH
 PS4='+ '
 RANLIB='ranlib'
@@ -140,9 +140,9 @@ mesonFlags=''
 export mesonFlags
 name='nix-shell-env'
 export name
-nativeBuildInputs='/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3 /nix/store/rjpjb5fl3jnhrck00a09pjwpw3j0zf5y-kotlin-2.3.21 /nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev /nix/store/zhfc14cnh29wlvl6q87hrv8691b9kpcd-gradle-9.0.0'
+nativeBuildInputs='/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3 /nix/store/rjpjb5fl3jnhrck00a09pjwpw3j0zf5y-kotlin-2.3.21 /nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev /nix/store/b7kaqaz4ws11yvgwxyc1x6dpzklg821v-gradle-9.8.0'
 export nativeBuildInputs
-out='/home/alonso/Documents/Organizations/AngelAlonsoDS/Kanara/outputs/out'
+out='/home/alonso/Documentos/Organizations/AngelAlonsoDS/Kanara/outputs/out'
 export out
 outputBin='out'
 outputDev='out'
@@ -161,7 +161,7 @@ phases='buildPhase'
 export phases
 pkg='/nix/store/c7c0yarb87cv4jxlyr02dxryrlmyi232-gcc-wrapper-15.2.0'
 declare -a pkgsBuildBuild=()
-declare -a pkgsBuildHost=('/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3' '/nix/store/kc32qwb5s29mxdrgva7rfwznd2filr8s-set-java-classpath-hook' '/nix/store/rjpjb5fl3jnhrck00a09pjwpw3j0zf5y-kotlin-2.3.21' '/nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8' '/nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev' '/nix/store/986gncymgny2hzjndz0nhv94kvp66sja-sqlite-3.51.2-bin' '/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2' '/nix/store/zhfc14cnh29wlvl6q87hrv8691b9kpcd-gradle-9.0.0' '/nix/store/4vyxba4g4palzf88c3ibbabzagqhlrj8-patchelf-0.15.2' '/nix/store/18xz9mrp7b0cjn5xvka4bpcsgiln7inw-update-autotools-gnu-config-scripts-hook' '/nix/store/0y5xmdb7qfvimjwbq7ibg1xdgkgjwqng-no-broken-symlinks.sh' '/nix/store/cv1d7p48379km6a85h4zp6kr86brh32q-audit-tmpdir.sh' '/nix/store/85clx3b0xkdf58jn161iy80y5223ilbi-compress-man-pages.sh' '/nix/store/p3l1a5y7nllfyrjn2krlwgcc3z0cd3fq-make-symlinks-relative.sh' '/nix/store/5yzw0vhkyszf2d179m0qfkgxmp5wjjx4-move-docs.sh' '/nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh' '/nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh' '/nix/store/pag6l61paj1dc9sv15l7bm5c17xn5kyk-move-systemd-user-units.sh' '/nix/store/cmzya9irvxzlkh7lfy6i82gbp0saxqj3-multiple-outputs.sh' '/nix/store/x8c40nfigps493a07sdr2pm5s9j1cdc0-patch-shebangs.sh' '/nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh' '/nix/store/xyff06pkhki3qy1ls77w10s0v79c9il0-reproducible-builds.sh' '/nix/store/z7k98578dfzi6l3hsvbivzm7hfqlk0zc-set-source-date-epoch-to-latest.sh' '/nix/store/pilsssjjdxvdphlg2h19p0bfx5q0jzkn-strip.sh' '/nix/store/c7c0yarb87cv4jxlyr02dxryrlmyi232-gcc-wrapper-15.2.0' '/nix/store/25771zf6h2dryp8d3i65gyg17mmphy9v-binutils-wrapper-2.46' )
+declare -a pkgsBuildHost=('/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3' '/nix/store/kc32qwb5s29mxdrgva7rfwznd2filr8s-set-java-classpath-hook' '/nix/store/rjpjb5fl3jnhrck00a09pjwpw3j0zf5y-kotlin-2.3.21' '/nix/store/18311cxwsdjsc52dhas54wfqqa212q5m-openjdk-21.0.12+8' '/nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev' '/nix/store/986gncymgny2hzjndz0nhv94kvp66sja-sqlite-3.51.2-bin' '/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2' '/nix/store/b7kaqaz4ws11yvgwxyc1x6dpzklg821v-gradle-9.8.0' '/nix/store/4vyxba4g4palzf88c3ibbabzagqhlrj8-patchelf-0.15.2' '/nix/store/18xz9mrp7b0cjn5xvka4bpcsgiln7inw-update-autotools-gnu-config-scripts-hook' '/nix/store/0y5xmdb7qfvimjwbq7ibg1xdgkgjwqng-no-broken-symlinks.sh' '/nix/store/cv1d7p48379km6a85h4zp6kr86brh32q-audit-tmpdir.sh' '/nix/store/85clx3b0xkdf58jn161iy80y5223ilbi-compress-man-pages.sh' '/nix/store/p3l1a5y7nllfyrjn2krlwgcc3z0cd3fq-make-symlinks-relative.sh' '/nix/store/5yzw0vhkyszf2d179m0qfkgxmp5wjjx4-move-docs.sh' '/nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh' '/nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh' '/nix/store/pag6l61paj1dc9sv15l7bm5c17xn5kyk-move-systemd-user-units.sh' '/nix/store/cmzya9irvxzlkh7lfy6i82gbp0saxqj3-multiple-outputs.sh' '/nix/store/x8c40nfigps493a07sdr2pm5s9j1cdc0-patch-shebangs.sh' '/nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh' '/nix/store/xyff06pkhki3qy1ls77w10s0v79c9il0-reproducible-builds.sh' '/nix/store/z7k98578dfzi6l3hsvbivzm7hfqlk0zc-set-source-date-epoch-to-latest.sh' '/nix/store/pilsssjjdxvdphlg2h19p0bfx5q0jzkn-strip.sh' '/nix/store/c7c0yarb87cv4jxlyr02dxryrlmyi232-gcc-wrapper-15.2.0' '/nix/store/25771zf6h2dryp8d3i65gyg17mmphy9v-binutils-wrapper-2.46' )
 declare -a pkgsBuildTarget=()
 declare -a pkgsHostHost=()
 declare -a pkgsHostTarget=()
@@ -173,7 +173,7 @@ preConfigurePhases=' updateAutotoolsGnuConfigScriptsPhase'
 declare -a preFixupHooks=('_moveToShare' '_multioutDocs' '_multioutDevs' )
 preferLocalBuild='1'
 export preferLocalBuild
-prefix='/home/alonso/Documents/Organizations/AngelAlonsoDS/Kanara/outputs/out'
+prefix='/home/alonso/Documentos/Organizations/AngelAlonsoDS/Kanara/outputs/out'
 declare -a propagatedBuildDepFiles=('propagated-build-build-deps' 'propagated-native-build-inputs' 'propagated-build-target-deps' )
 propagatedBuildInputs=''
 export propagatedBuildInputs

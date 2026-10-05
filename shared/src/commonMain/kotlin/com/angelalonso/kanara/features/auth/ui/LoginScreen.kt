@@ -1,16 +1,10 @@
 package com.angelalonso.kanara.features.auth.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +13,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.angelalonso.kanara.core.ui.AppButton
 import com.angelalonso.kanara.core.ui.AppTextField
 import com.angelalonso.kanara.features.auth.AuthService
@@ -42,13 +35,11 @@ fun LoginScreen(authService: AuthService) {
     }
 
     Column(
-        Modifier.fillMaxSize().padding(Spacing.Medium),
+        Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(Spacing.Large, Alignment.CenterVertically)
     ) {
         Text("Acceso al sistema", style = MaterialTheme.typography.headlineSmall)
-
-        Spacer(modifier = Modifier.height(Spacing.Medium))
 
         AppTextField(
             value = usuarioField,
@@ -56,19 +47,14 @@ fun LoginScreen(authService: AuthService) {
             enabled = !isLoginIn
         )
 
-        Spacer(modifier = Modifier.height(Spacing.Medium))
-
         AppTextField(
             value = passwordField,
             onValueChange = {passwordField = it; loginError = null},
             enabled = !isLoginIn
         )
 
-        Spacer(modifier = Modifier.height(Spacing.Medium))
-
         loginError?.let {
             Text("Login error: $it", color = MaterialTheme.colorScheme.error)
-            Spacer(modifier = Modifier.height(Spacing.Medium))
         }
 
         AppButton(

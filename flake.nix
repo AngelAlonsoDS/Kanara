@@ -45,14 +45,14 @@
         # cualquier máquina, sin depender del estado de nixpkgs en ese
         # momento. El checksum es público en https://gradle.org/release-checksums/
         # ------------------------------------------------------------------
-        gradleVersion = "9.0.0";
+        gradleVersion = "9.8.0";
         gradle9 = pkgs.stdenv.mkDerivation rec {
           pname = "gradle";
           version = gradleVersion;
 
           src = pkgs.fetchurl {
             url = "https://services.gradle.org/distributions/gradle-${version}-bin.zip";
-            sha256 = "8fad3d78296ca518113f3d29016617c7f9367dc005f932bd9d93bf45ba46072b";
+            sha256 = "bafd5ce9cfaea0fbccfdc8439a1ac42fbd4cd9c89dc9a988228d8a2639a58e6c";
           };
 
           nativeBuildInputs = [ pkgs.unzip pkgs.makeWrapper ];

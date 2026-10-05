@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
@@ -6,8 +9,12 @@ plugins {
 }
 
 kotlin {
-    jvm()
-
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+            freeCompilerArgs.add("-Xjdk-release=21")
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {
@@ -35,6 +42,11 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(21)
+}
+
 
 sqldelight {
     databases {
