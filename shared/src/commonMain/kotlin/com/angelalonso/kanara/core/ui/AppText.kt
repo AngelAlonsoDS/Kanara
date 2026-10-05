@@ -29,6 +29,6 @@ fun AppText(
     Text(
         text = text,
         modifier = modifier,
-        style = style
+        style = style,
     )
 }

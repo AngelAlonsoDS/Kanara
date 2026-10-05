@@ -37,7 +37,7 @@ NIX_BINTOOLS='/nix/store/25771zf6h2dryp8d3i65gyg17mmphy9v-binutils-wrapper-2.46'
 export NIX_BINTOOLS
 NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_BUILD_CORES='6'
+NIX_BUILD_CORES='2'
 export NIX_BUILD_CORES
 NIX_CC='/nix/store/c7c0yarb87cv4jxlyr02dxryrlmyi232-gcc-wrapper-15.2.0'
 export NIX_CC
@@ -49,7 +49,7 @@ NIX_ENFORCE_NO_NATIVE='1'
 export NIX_ENFORCE_NO_NATIVE
 NIX_HARDENING_ENABLE='bindnow format fortify fortify3 libcxxhardeningfast pic relro stackclashprotection stackprotector strictflexarrays1 strictoverflow zerocallusedregs'
 export NIX_HARDENING_ENABLE
-NIX_LDFLAGS='-rpath /home/alonso/Documentos/Organizations/AngelAlonsoDS/Kanara/outputs/out/lib  -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib'
+NIX_LDFLAGS='-rpath /home/alonso/Documents/Organizations/AngelAlonsoDS/Kanara/outputs/out/lib  -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib -L/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3/lib -L/nix/store/p774nkfb6frncliffdsyppg93n3cpb4b-sqlite-3.51.2/lib'
 export NIX_LDFLAGS
 NIX_NO_SELF_RPATH='1'
 NIX_STORE='/nix/store'
@@ -142,7 +142,7 @@ name='nix-shell-env'
 export name
 nativeBuildInputs='/nix/store/pr0mz794qrdh5kk4xiwp2xgx2czmk1xn-zulu-ca-jdk-25.0.3 /nix/store/rjpjb5fl3jnhrck00a09pjwpw3j0zf5y-kotlin-2.3.21 /nix/store/nabvcs2dqhnfckjv0vb5v6hx5m404l5x-sqlite-3.51.2-dev /nix/store/b7kaqaz4ws11yvgwxyc1x6dpzklg821v-gradle-9.8.0'
 export nativeBuildInputs
-out='/home/alonso/Documentos/Organizations/AngelAlonsoDS/Kanara/outputs/out'
+out='/home/alonso/Documents/Organizations/AngelAlonsoDS/Kanara/outputs/out'
 export out
 outputBin='out'
 outputDev='out'
@@ -173,7 +173,7 @@ preConfigurePhases=' updateAutotoolsGnuConfigScriptsPhase'
 declare -a preFixupHooks=('_moveToShare' '_multioutDocs' '_multioutDevs' )
 preferLocalBuild='1'
 export preferLocalBuild
-prefix='/home/alonso/Documentos/Organizations/AngelAlonsoDS/Kanara/outputs/out'
+prefix='/home/alonso/Documents/Organizations/AngelAlonsoDS/Kanara/outputs/out'
 declare -a propagatedBuildDepFiles=('propagated-build-build-deps' 'propagated-native-build-inputs' 'propagated-build-target-deps' )
 propagatedBuildInputs=''
 export propagatedBuildInputs

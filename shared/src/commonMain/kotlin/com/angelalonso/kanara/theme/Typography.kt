@@ -62,35 +62,41 @@ val AppTypography: Typography
             fontFamily = AppFonts.Baloo2,
             fontWeight = FontWeight.Bold,
             fontSize = 32.sp,
+            color = Primary
         ),
 
         headlineLarge = TextStyle(
             fontFamily = AppFonts.Baloo2,
             fontWeight = FontWeight.Bold,
             fontSize = 28.sp,
+            color = Primary
         ),
 
         titleLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Bold,
             fontSize = FontSizes.Large,
+            color = Primary
         ),
 
         bodyLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Normal,
             fontSize = FontSizes.Large,
+            color = TextBody
         ),
 
         bodyMedium = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Normal,
             fontSize = FontSizes.Medium,
+            color = TextBody
         ),
 
         labelLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Bold,
             fontSize = FontSizes.Large,
+            color = TextBody
         ),
     )
