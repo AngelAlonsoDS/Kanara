@@ -32,18 +32,14 @@ object CornerRadii {
     val Large = 24.dp
 }
 
-/*
-class CornerRadii(
-    private val additionalPadding: Dp = 0.dp
-) {
-    val Large = 28.dp + additionalPadding
-    val Medium = 16.dp + additionalPadding
-    val Small = 8.dp + additionalPadding
-}
-*/
-
 val AppShapes = Shapes(
     small = RoundedCornerShape(CornerRadii.Small),
     medium = RoundedCornerShape(CornerRadii.Medium),
     large = RoundedCornerShape(CornerRadii.Large),
 )
+
+object WindowBreakpoints {
+    val Compact: Dp = 600.dp
+    val Medium: Dp = 840.dp
+    val Expanded: Dp = 1200.dp
+}

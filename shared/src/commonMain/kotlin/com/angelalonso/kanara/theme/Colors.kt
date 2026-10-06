@@ -3,33 +3,33 @@ package com.angelalonso.kanara.theme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-val Primary = Color(0xFF243B8F) // Azul rey
-val OnPrimary = Color(0xFF1F3171)
+val PrimaryColor = Color(0xFF243B8F) // Azul rey
+val OnPrimaryColor = Color(0xFF1F3171)
 
-val Secondary = Color(0xFF24718F) // Azul cielo
-val OnSecondary = Color(0xFF174A5D)
+val SecondaryColor = Color(0xFF24718F) // Azul cielo
+val OnSecondaryColor = Color(0xFF174A5D)
 
-val Tertiary = Color(0xFFB6B1AA) // Crema gris
-val OnTertiary = Color(0xFF35373F)
+val TertiaryColor = Color(0xFFB6B1AA) // Crema gris
+val OnTertiaryColor = Color(0xFF35373F)
 
-val Error = Color(0xFF8F243B) // Rojo
-val OnError = Color(0xFF741227)
+val ErrorColor = Color(0xFF8F243B) // Rojo
+val OnErrorColor = Color(0xFF741227)
 
-val Warning = Color(0xFFA78C2A) // Amarillo
-val OnWarning = Color(0xFF967C1E)
+val WarningColor = Color(0xFFA78C2A) // Amarillo
+val OnWarningColor = Color(0xFF967C1E)
 
-val Success = Color(0xFF3B8F24) // Verde
-val OnSuccess = Color(0xFF30801A)
+val SuccessColor = Color(0xFF3B8F24) // Verde
+val OnSuccessColor = Color(0xFF30801A)
 
 
-val Background = Color(0xFFFFF0C9) // Fondo crema claro
-val Surface = Color(0xFFF9F2E7)
+val BackgroundColor = Color(0xFFFFF0C9) // Fondo crema claro
+val SurfaceColor = Color(0xFFF9F2E7)
 
-val TextBody = Color(0xFF22232A) // Gris oscuro
-val OnTextBody = Color(0xFF000000)
+val TextBodyColor = Color(0xFF22232A) // Gris oscuro
+val OnTextBodyColor = Color(0xFF000000)
 
-val TextButton = Color(0xFFFFF0C9) // Color del fondo TODO: Separado del color Surface para posible rediseño
-val OnTextButton = Color(0xFFDFD7BF)
+val TextButtonColor = Color(0xFFFFF0C9) // Color del fondo TODO: Separado del color Surface para posible rediseño
+val OnTextButtonColor = Color(0xFFDFD7BF)
 
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF243B8F),

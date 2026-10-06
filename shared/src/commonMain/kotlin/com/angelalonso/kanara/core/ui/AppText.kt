@@ -1,9 +1,11 @@
 package com.angelalonso.kanara.core.ui
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.angelalonso.kanara.theme.Spacing
 
 enum class AppTextVariant {
     Title,
@@ -28,7 +30,7 @@ fun AppText(
 
     Text(
         text = text,
-        modifier = modifier,
+        modifier = modifier.padding(Spacing.Small),
         style = style,
     )
 }

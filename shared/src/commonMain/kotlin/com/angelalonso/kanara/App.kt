@@ -8,36 +8,64 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.angelalonso.kanara.core.error.ErrorScreen
+import com.angelalonso.kanara.core.ui.AppSnackbarProvider
+import com.angelalonso.kanara.core.ui.window.WindowSizeProvider
 import com.angelalonso.kanara.core.utils.InitState
 import com.angelalonso.kanara.features.auth.ui.LoginScreen
 import com.angelalonso.kanara.theme.AppTheme
-import com.angelalonso.kanara.theme.Background
 
 @Composable
-// @Preview
 fun App(appContainer: AppContainer) {
     AppTheme {
-        var initState by remember { mutableStateOf<InitState>(InitState.Loading) }
-        var retryTrigger by remember { mutableStateOf(0) }
+        WindowSizeProvider { windowSize ->
 
-        // Carga la base de datos
-        LaunchedEffect(retryTrigger) {
-            initState = try {
-                appContainer.databaseInitializer.initialize()
-                InitState.Success
-            } catch (e: Exception) {
-                InitState.Error(e.message ?: "Something went wrong")
-            }
-        }
+            AppSnackbarProvider {
+                var initState by remember {
+                    mutableStateOf<InitState>(InitState.Loading)
+                }
 
-        Box(
-            Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
-            contentAlignment = Alignment.Center
-        ) {
-            when (val state = initState) {
-                is InitState.Loading -> SplashScreen()
-                is InitState.Success -> LoginScreen(appContainer.authService)
-                is InitState.Error -> ErrorScreen(state.message, { retryTrigger++})
+                var retryTrigger by remember {
+                    mutableStateOf(0)
+                }
+
+                LaunchedEffect(retryTrigger) {
+                    initState = try {
+                        appContainer.databaseInitializer.initialize()
+                        InitState.Success
+                    } catch (e: Exception) {
+                        InitState.Error(
+                            e.message ?: "Something went wrong"
+                        )
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            MaterialTheme.colorScheme.background
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    when (val state = initState) {
+                        is InitState.Loading ->
+                            SplashScreen()
+
+                        is InitState.Success ->
+                            LoginScreen(
+                                authService = appContainer.authService,
+                                windowSize = windowSize
+                            )
+
+                        is InitState.Error ->
+                            ErrorScreen(
+                                message = state.message,
+                                onRetry = {
+                                    retryTrigger += 1
+                                }
+                            )
+                    }
+                }
             }
         }
     }

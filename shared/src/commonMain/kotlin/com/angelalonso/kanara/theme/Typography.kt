@@ -6,7 +6,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kanara.shared.generated.resources.Baloo2_Bold
 import kanara.shared.generated.resources.Baloo2_Medium
@@ -62,41 +61,41 @@ val AppTypography: Typography
             fontFamily = AppFonts.Baloo2,
             fontWeight = FontWeight.Bold,
             fontSize = 32.sp,
-            color = Primary
+            color = PrimaryColor
         ),
 
         headlineLarge = TextStyle(
             fontFamily = AppFonts.Baloo2,
             fontWeight = FontWeight.Bold,
             fontSize = 28.sp,
-            color = Primary
+            color = PrimaryColor
         ),
 
         titleLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Bold,
             fontSize = FontSizes.Large,
-            color = Primary
+            color = PrimaryColor
         ),
 
         bodyLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Normal,
             fontSize = FontSizes.Large,
-            color = TextBody
+            color = TextBodyColor
         ),
 
         bodyMedium = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Normal,
             fontSize = FontSizes.Medium,
-            color = TextBody
+            color = TextBodyColor
         ),
 
         labelLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Bold,
             fontSize = FontSizes.Large,
-            color = TextBody
+            color = TextBodyColor
         ),
     )

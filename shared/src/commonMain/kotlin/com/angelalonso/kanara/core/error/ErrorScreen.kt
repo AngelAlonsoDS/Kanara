@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ErrorScreen(message: String, onRetry: () -> Unit, textButton: String = "Retry") {
+fun ErrorScreen(message: String, textButton: String = "Retry", onRetry: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = message, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
