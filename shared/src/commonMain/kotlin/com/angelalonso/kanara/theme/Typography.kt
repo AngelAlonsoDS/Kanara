@@ -92,6 +92,13 @@ val AppTypography: Typography
             color = TextBodyColor
         ),
 
+        bodySmall = TextStyle(
+            fontFamily = AppFonts.Nunito,
+            fontWeight = FontWeight.Light,
+            fontSize = FontSizes.Small,
+            color = TextBodyColor
+        ),
+
         labelLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Bold,

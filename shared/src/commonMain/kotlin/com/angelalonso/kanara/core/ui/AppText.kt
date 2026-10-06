@@ -1,36 +1,46 @@
 package com.angelalonso.kanara.core.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.angelalonso.kanara.theme.Spacing
+import androidx.compose.ui.text.style.TextAlign
 
 enum class AppTextVariant {
-    Title,
-    Subtitle,
-    Body
+    TITLE,
+    SUBTITLE,
+    HEADING,
+    SUBHEADING,
+    BODY,
+    EMPHASIS
 }
 
 @Composable
 fun AppText(
     text: String,
-    variant: AppTextVariant = AppTextVariant.Body,
+    variant: AppTextVariant = AppTextVariant.BODY,
+    textAlign: TextAlign = TextAlign.Unspecified,
     modifier: Modifier = Modifier,
 ) {
     val style = when (variant) {
-        AppTextVariant.Body ->
-            MaterialTheme.typography.bodyMedium
-        AppTextVariant.Title ->
-            MaterialTheme.typography.titleMedium
-        AppTextVariant.Subtitle ->
+        AppTextVariant.TITLE ->
+            MaterialTheme.typography.headlineLarge
+        AppTextVariant.SUBTITLE ->
             MaterialTheme.typography.titleSmall
+        AppTextVariant.HEADING ->
+            MaterialTheme.typography.titleLarge
+        AppTextVariant.SUBHEADING ->
+            MaterialTheme.typography.titleMedium
+        AppTextVariant.BODY ->
+            MaterialTheme.typography.bodyMedium
+        AppTextVariant.EMPHASIS ->
+            MaterialTheme.typography.bodySmall
     }
 
     Text(
         text = text,
-        modifier = modifier.padding(Spacing.Small),
+        modifier = modifier,
+        textAlign = textAlign,
         style = style,
     )
 }

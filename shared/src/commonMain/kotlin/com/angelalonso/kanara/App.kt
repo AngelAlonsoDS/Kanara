@@ -4,13 +4,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.angelalonso.kanara.core.error.ErrorScreen
 import com.angelalonso.kanara.core.ui.AppSnackbarProvider
+import com.angelalonso.kanara.core.ui.window.WindowSize
 import com.angelalonso.kanara.core.ui.window.WindowSizeProvider
 import com.angelalonso.kanara.core.utils.InitState
+import com.angelalonso.kanara.core.utils.Route
 import com.angelalonso.kanara.features.auth.ui.LoginScreen
 import com.angelalonso.kanara.theme.AppTheme
 
@@ -48,15 +54,7 @@ fun App(appContainer: AppContainer) {
                     contentAlignment = Alignment.Center
                 ) {
                     when (val state = initState) {
-                        is InitState.Loading ->
-                            SplashScreen()
-
-                        is InitState.Success ->
-                            LoginScreen(
-                                authService = appContainer.authService,
-                                windowSize = windowSize
-                            )
-
+                        is InitState.Loading -> SplashScreen()
                         is InitState.Error ->
                             ErrorScreen(
                                 message = state.message,
@@ -64,9 +62,33 @@ fun App(appContainer: AppContainer) {
                                     retryTrigger += 1
                                 }
                             )
+                        is InitState.Success -> navigation(appContainer, windowSize)
+
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun navigation(appContainer: AppContainer, windowSize: WindowSize) {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = Route.Login) {
+        composable<Route.Login> {
+            LoginScreen(
+                authService = appContainer.authService,
+                windowSize = windowSize,
+                onLoginSuccess = {
+                    navController.navigate(Route.PacienteList) {
+                        popUpTo(Route.Login) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable<Route.PacienteList> {
+            Text("Lol")
         }
     }
 }

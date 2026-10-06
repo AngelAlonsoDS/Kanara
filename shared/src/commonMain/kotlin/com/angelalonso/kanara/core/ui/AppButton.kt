@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.angelalonso.kanara.theme.Spacing
 
 enum class AppButtonVariant {
@@ -21,7 +23,7 @@ fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    content: @Composable RowScope.() -> Unit,
+    text: String
 ) {
     val colors = when (variant) {
         AppButtonVariant.Primary ->
@@ -49,6 +51,7 @@ fun AppButton(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
         colors = colors,
-        content = content,
-    )
+    ) {
+        Text(text, modifier = Modifier.padding(Spacing.Small), color = Color.White)
+    }
 }

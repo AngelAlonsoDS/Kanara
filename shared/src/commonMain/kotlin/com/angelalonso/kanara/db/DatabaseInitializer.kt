@@ -9,7 +9,10 @@ class DatabaseInitializer(private val driverFactory: DatabaseDriverFactory) {
 
     suspend fun initialize(): AppDatabase = withContext(Dispatchers.IO) {
         val driver = driverFactory.createDriver()
-        AppDatabase(driver).also { database = it }
+        AppDatabase(driver).also {
+            database = it
+            DatabaseSeeder(it).seed()
+        }
     }
 
     fun getDatabase(): AppDatabase =

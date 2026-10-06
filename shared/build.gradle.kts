@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
     id("app.cash.sqldelight")
 }
 
@@ -24,21 +25,29 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
+
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
             implementation(libs.compose.material.icons.core)
-            implementation("app.cash.sqldelight:coroutines-extensions:2.0.2")
+
+            implementation(libs.sqldelight.coroutines)
+            implementation(libs.androidx.navigation.compose)
+            implementation(libs.kotlinx.serialization.json)
         }
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+
         val jvmMain by getting {
             dependencies {
-                implementation("app.cash.sqldelight:sqlite-driver:2.0.2")
-                implementation("at.favre.lib:bcrypt:0.10.2")
+                implementation(libs.sqldelight.sqlite.driver)
+                implementation(libs.bcrypt)
             }
         }
     }
+
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }

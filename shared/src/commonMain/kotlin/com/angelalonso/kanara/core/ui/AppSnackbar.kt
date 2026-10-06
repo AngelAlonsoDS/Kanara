@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -46,7 +47,6 @@ fun AppSnackbar(
 
     Snackbar(
         modifier = modifier
-            .fillMaxWidth()
             .padding(horizontal = Spacing.Medium, vertical = Spacing.Small),
         shape = AppShapes.medium,
         containerColor = containerColor,
@@ -65,12 +65,19 @@ fun AppSnackbar(
             }
         }
     ) {
-        Row {
-            Icon(Icons.Default.Warning, contentDescription = "Cuidado!")
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing.Medium)
+        ) {
+            Icon(
+                Icons.Default.Warning,
+                contentDescription = "Cuidado!",
+                tint = Color.White
+            )
 
             Column {
-                Text(text = visuals.title, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
-                Text(text = visuals.message, style = MaterialTheme.typography.bodySmall)
+                Text(text = visuals.title, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(text = visuals.message, style = MaterialTheme.typography.bodySmall, color = Color.White)
             }
         }
     }

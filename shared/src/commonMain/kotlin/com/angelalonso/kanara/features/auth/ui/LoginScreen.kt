@@ -1,15 +1,14 @@
 package com.angelalonso.kanara.features.auth.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,10 +18,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.angelalonso.kanara.core.ui.AppButton
+import com.angelalonso.kanara.core.ui.AppText
 import com.angelalonso.kanara.core.ui.AppTextField
+import com.angelalonso.kanara.core.ui.AppTextVariant
 import com.angelalonso.kanara.core.ui.LocalSnackbarHostState
 import com.angelalonso.kanara.core.ui.showAppSnackbar
 import com.angelalonso.kanara.core.ui.window.WindowSize
@@ -34,7 +35,7 @@ import com.angelalonso.kanara.theme.Spacing
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(authService: AuthService, windowSize: WindowSize) {
+fun LoginScreen(authService: AuthService, windowSize: WindowSize, onLoginSuccess: () -> Unit) {
     val snackbarState = LocalSnackbarHostState.current
 
     var usuarioField by remember { mutableStateOf("") }
@@ -45,7 +46,14 @@ fun LoginScreen(authService: AuthService, windowSize: WindowSize) {
     val scope = rememberCoroutineScope()
 
     if (usuarioLogueado != null) {
-        Text("Bienvenido, ${usuarioLogueado!!.nombreCompleto}")
+        snackbarState.showAppSnackbar(
+            title = "Acceso al sistema",
+            message = "Bienvenido, ${usuarioLogueado!!.nombreCompleto}",
+            variant = AppSnackbarVariant.SUCCESS,
+        )
+
+        onLoginSuccess
+
         return
     }
 
@@ -63,17 +71,20 @@ fun LoginScreen(authService: AuthService, windowSize: WindowSize) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Spacing.Large, Alignment.CenterVertically)
         ) {
-            Text("Acceso al sistema", style = MaterialTheme.typography.headlineSmall)
+            AppText("Acceso al sistema", variant = AppTextVariant.TITLE)
+
+            AppText("Usuario", modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Left)
 
             AppTextField(
-                modifier = Modifier.fillMaxWidth().padding(Spacing.Small),
+                modifier = Modifier.fillMaxWidth(),
                 value = usuarioField,
                 onValueChange = { usuarioField = it; loginError = null },
                 enabled = !isLoginIn
             )
 
+            AppText("Contraseña", modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Left)
             AppTextField(
-                modifier = Modifier.fillMaxWidth().padding(Spacing.Small),
+                modifier = Modifier.fillMaxWidth(),
                 value = passwordField,
                 onValueChange = { passwordField = it; loginError = null },
                 enabled = !isLoginIn
@@ -87,8 +98,11 @@ fun LoginScreen(authService: AuthService, windowSize: WindowSize) {
                 )
             }
 
+            Spacer(Modifier.height(Spacing.Small))
+
             AppButton(
-                modifier = Modifier.fillMaxWidth().padding(Spacing.Small),
+                modifier = Modifier.fillMaxWidth(),
+                text = if (isLoginIn) "Verificando ..." else "Acceder",
                 onClick = {
                     isLoginIn = true
                     loginError = null
@@ -100,9 +114,7 @@ fun LoginScreen(authService: AuthService, windowSize: WindowSize) {
                         isLoginIn = false
                     }
                 }
-            ) {
-                Text(if (isLoginIn) "Verificando ..." else "Acceder", color = Color.White)
-            }
+            )
         }
     }
 }
