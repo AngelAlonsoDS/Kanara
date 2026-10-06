@@ -85,8 +85,6 @@ fun LoginScreen(authService: AuthService, windowSize: WindowSize) {
                     message = "Login error: $it",
                     variant = AppSnackbarVariant.WARNING,
                 )
-
-                // Text("Login error: $it", color = MaterialTheme.colorScheme.error)
             }
 
             AppButton(

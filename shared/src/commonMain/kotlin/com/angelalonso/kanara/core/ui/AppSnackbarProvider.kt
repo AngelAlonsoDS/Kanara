@@ -56,11 +56,14 @@ fun AppSnackbarProvider(content: @Composable () -> Unit) {
             SnackbarHost(
                 hostState = hostState,
                 modifier = Modifier.align(Alignment.BottomCenter)
-            ) { visuals ->
-                (visuals as? AppSnackbarVisuals)?.let { appVisuals ->
+            ) { snackbarData ->
+
+                (snackbarData.visuals as? AppSnackbarVisuals)?.let { appVisuals ->
                     AppSnackbar(
                         visuals = appVisuals,
-                        onDismiss = { hostState.currentSnackbarData?.dismiss() }
+                        onDismiss = {
+                            snackbarData.dismiss()
+                        }
                     )
                 }
             }
