@@ -1,6 +1,5 @@
-package com.angelalonso.kanara.core.ui
+package com.angelalonso.kanara.core.layout.components
 
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.angelalonso.kanara.theme.OnTertiaryColor
 import com.angelalonso.kanara.theme.Spacing
 
 enum class AppButtonVariant {
@@ -52,6 +52,10 @@ fun AppButton(
         shape = MaterialTheme.shapes.medium,
         colors = colors,
     ) {
-        Text(text, modifier = Modifier.padding(Spacing.Small), color = Color.White)
+        Text(
+            text,
+            modifier = Modifier.padding(Spacing.Small),
+            color = if (variant == AppButtonVariant.Tertiary) OnTertiaryColor else Color.White
+        )
     }
 }

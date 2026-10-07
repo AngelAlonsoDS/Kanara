@@ -1,4 +1,4 @@
-package com.angelalonso.kanara.core.ui
+package com.angelalonso.kanara.core.layout.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField

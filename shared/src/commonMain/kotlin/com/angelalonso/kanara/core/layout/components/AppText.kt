@@ -1,4 +1,4 @@
-package com.angelalonso.kanara.core.ui
+package com.angelalonso.kanara.core.layout.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,7 +26,7 @@ fun AppText(
         AppTextVariant.TITLE ->
             MaterialTheme.typography.headlineLarge
         AppTextVariant.SUBTITLE ->
-            MaterialTheme.typography.titleSmall
+            MaterialTheme.typography.headlineSmall
         AppTextVariant.HEADING ->
             MaterialTheme.typography.titleLarge
         AppTextVariant.SUBHEADING ->

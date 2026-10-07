@@ -11,10 +11,10 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.Black,
 
     secondary = SecondaryColor,
-    onSecondary = Color.White,
+    onSecondary = Color.Black,
 
     tertiary = TertiaryColor,
-    onTertiary = Color(0xFF35373F),
+    onTertiary = Color.Black,
 
     error = ErrorColor,
     onError = Color.White,

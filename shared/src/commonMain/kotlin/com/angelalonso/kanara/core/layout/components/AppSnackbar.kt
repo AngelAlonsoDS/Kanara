@@ -1,4 +1,4 @@
-package com.angelalonso.kanara.core.ui
+package com.angelalonso.kanara.core.layout.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons

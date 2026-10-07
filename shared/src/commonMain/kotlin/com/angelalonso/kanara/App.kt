@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,12 +11,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.angelalonso.kanara.core.error.ErrorScreen
-import com.angelalonso.kanara.core.ui.AppSnackbarProvider
+import com.angelalonso.kanara.core.layout.MainScreen
+import com.angelalonso.kanara.core.layout.components.AppSnackbarProvider
+import com.angelalonso.kanara.core.ui.LocalUserSession
 import com.angelalonso.kanara.core.ui.window.WindowSize
 import com.angelalonso.kanara.core.ui.window.WindowSizeProvider
 import com.angelalonso.kanara.core.utils.InitState
 import com.angelalonso.kanara.core.utils.Route
+import com.angelalonso.kanara.features.auth.UserSession
 import com.angelalonso.kanara.features.auth.ui.LoginScreen
+import com.angelalonso.kanara.features.patients.ui.PacienteScreen
 import com.angelalonso.kanara.theme.AppTheme
 
 @Composable
@@ -32,6 +35,10 @@ fun App(appContainer: AppContainer) {
 
                 var retryTrigger by remember {
                     mutableStateOf(0)
+                }
+
+                var userSession by remember {
+                    mutableStateOf<UserSession?>(null)
                 }
 
                 LaunchedEffect(retryTrigger) {
@@ -62,7 +69,19 @@ fun App(appContainer: AppContainer) {
                                     retryTrigger += 1
                                 }
                             )
-                        is InitState.Success -> navigation(appContainer, windowSize)
+                        is InitState.Success ->
+                            CompositionLocalProvider(LocalUserSession provides userSession) {
+                                navigation(
+                                    appContainer,
+                                    windowSize,
+                                    onLogin = { session ->
+                                        userSession = session
+                                    },
+                                    onLogout = {
+                                        userSession = null
+                                    }
+                                )
+                            }
 
                     }
                 }
@@ -72,23 +91,39 @@ fun App(appContainer: AppContainer) {
 }
 
 @Composable
-fun navigation(appContainer: AppContainer, windowSize: WindowSize) {
+fun navigation(
+    appContainer: AppContainer,
+    windowSize: WindowSize,
+    onLogin: (UserSession) -> Unit,
+    onLogout: () -> Unit
+) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Route.Login) {
+    NavHost(
+        navController = navController,
+        startDestination = Route.Login,
+    ) {
         composable<Route.Login> {
             LoginScreen(
                 authService = appContainer.authService,
                 windowSize = windowSize,
-                onLoginSuccess = {
-                    navController.navigate(Route.PacienteList) {
+                onLoginSuccess = { result ->
+                    onLogin(
+                        UserSession(
+                            userId = result.userId,
+                            nombreCompleto = result.nombreCompleto,
+                            rol = result.rol
+                        )
+                    )
+
+                    navController.navigate(Route.Home) {
                         popUpTo(Route.Login) { inclusive = true }
                     }
                 }
             )
         }
-        composable<Route.PacienteList> {
-            Text("Lol")
+        composable<Route.Home> {
+            MainScreen(appContainer)
         }
     }
 }

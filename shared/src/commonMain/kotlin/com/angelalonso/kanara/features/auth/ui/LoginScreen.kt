@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,12 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.angelalonso.kanara.core.ui.AppButton
-import com.angelalonso.kanara.core.ui.AppText
-import com.angelalonso.kanara.core.ui.AppTextField
-import com.angelalonso.kanara.core.ui.AppTextVariant
-import com.angelalonso.kanara.core.ui.LocalSnackbarHostState
-import com.angelalonso.kanara.core.ui.showAppSnackbar
+import com.angelalonso.kanara.core.layout.components.AppButton
+import com.angelalonso.kanara.core.layout.components.AppText
+import com.angelalonso.kanara.core.layout.components.AppTextField
+import com.angelalonso.kanara.core.layout.components.AppTextVariant
+import com.angelalonso.kanara.core.layout.components.LocalSnackbarHostState
+import com.angelalonso.kanara.core.layout.components.showAppSnackbar
 import com.angelalonso.kanara.core.ui.window.WindowSize
 import com.angelalonso.kanara.core.ui.window.formWidth
 import com.angelalonso.kanara.core.utils.AppSnackbarVariant
@@ -35,27 +34,18 @@ import com.angelalonso.kanara.theme.Spacing
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(authService: AuthService, windowSize: WindowSize, onLoginSuccess: () -> Unit) {
+fun LoginScreen(
+    authService: AuthService,
+    windowSize: WindowSize,
+    onLoginSuccess: (LoginResult.Success) -> Unit
+) {
     val snackbarState = LocalSnackbarHostState.current
 
     var usuarioField by remember { mutableStateOf("") }
     var passwordField by remember { mutableStateOf("") }
     var loginError by remember { mutableStateOf<String?>(null) }
     var isLoginIn by remember { mutableStateOf(false) }
-    var usuarioLogueado by remember { mutableStateOf<LoginResult.Success?>(null) }
     val scope = rememberCoroutineScope()
-
-    if (usuarioLogueado != null) {
-        snackbarState.showAppSnackbar(
-            title = "Acceso al sistema",
-            message = "Bienvenido, ${usuarioLogueado!!.nombreCompleto}",
-            variant = AppSnackbarVariant.SUCCESS,
-        )
-
-        onLoginSuccess
-
-        return
-    }
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
@@ -106,11 +96,29 @@ fun LoginScreen(authService: AuthService, windowSize: WindowSize, onLoginSuccess
                 onClick = {
                     isLoginIn = true
                     loginError = null
+
                     scope.launch {
-                        when (val result = authService.login(usuarioField, passwordField)) {
-                            is LoginResult.Success -> usuarioLogueado = result
-                            is LoginResult.CredencialesInvalidas -> loginError = "Usuario o contraseña incorrectos"
+                        when (
+                            val result = authService.login(
+                                usuarioField,
+                                passwordField
+                            )
+                        ) {
+                            is LoginResult.Success -> {
+                                snackbarState.showAppSnackbar(
+                                    title = "Acceso al sistema",
+                                    message = "Bienvenido, ${result.nombreCompleto}",
+                                    variant = AppSnackbarVariant.SUCCESS
+                                )
+
+                                onLoginSuccess(result)
+                            }
+
+                            is LoginResult.CredencialesInvalidas -> {
+                                loginError = "Usuario o contraseña incorrectos"
+                            }
                         }
+
                         isLoginIn = false
                     }
                 }
