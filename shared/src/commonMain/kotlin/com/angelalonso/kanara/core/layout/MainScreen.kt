@@ -13,8 +13,10 @@ import androidx.navigation.compose.rememberNavController
 import com.angelalonso.kanara.AppContainer
 import com.angelalonso.kanara.core.layout.components.AppDrawer
 import com.angelalonso.kanara.core.layout.components.AppText
+import com.angelalonso.kanara.core.utils.LabelNameRoutes
 import com.angelalonso.kanara.core.utils.Route
 import com.angelalonso.kanara.features.patients.ui.PacienteScreen
+import com.angelalonso.kanara.features.users.ui.AccountScreen
 
 @Composable
 fun MainScreen(
@@ -27,6 +29,7 @@ fun MainScreen(
     val navController = rememberNavController()
 
     AppShell(
+        nameRoute = LabelNameRoutes[currentRoute],
         drawer = {
             AppDrawer(
                 currentRoute = currentRoute,
@@ -52,6 +55,18 @@ fun MainScreen(
 
                 composable<Route.UsuarioList> {
                     AppText("UsuarioList")
+                }
+
+                composable<Route.PacienteForm> {
+                    AppText("PacienteForm")
+                }
+
+                composable<Route.Account> {
+                    AccountScreen()
+                }
+
+                composable<Route.Settings> {
+                    AppText("Configuracion")
                 }
             }
         }

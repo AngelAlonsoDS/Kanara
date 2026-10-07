@@ -15,9 +15,15 @@ object Spacing {
 }
 
 object FontSizes {
-    val Small = 16.sp
-    val Medium = 18.sp
-    val Large = 20.sp
+    val Emphasis = 16.sp
+    val Body = 18.sp
+    val Subheader = 20.sp
+
+    val Header = 24.sp
+
+    val Subtitle = 28.sp
+
+    val Title = 30.sp
 }
 
 object RelativeFontSizes {

@@ -20,11 +20,12 @@ fun AppText(
     text: String,
     variant: AppTextVariant = AppTextVariant.BODY,
     textAlign: TextAlign = TextAlign.Unspecified,
+
     modifier: Modifier = Modifier,
 ) {
     val style = when (variant) {
         AppTextVariant.TITLE ->
-            MaterialTheme.typography.headlineLarge
+            MaterialTheme.typography.displayLarge
         AppTextVariant.SUBTITLE ->
             MaterialTheme.typography.headlineSmall
         AppTextVariant.HEADING ->

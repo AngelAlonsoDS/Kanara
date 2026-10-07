@@ -59,50 +59,50 @@ val AppTypography: Typography
     get() = Typography(
         displayLarge = TextStyle(
             fontFamily = AppFonts.Baloo2,
-            fontWeight = FontWeight.Bold,
-            fontSize = 32.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = FontSizes.Title,
             color = PrimaryColor
         ),
 
         headlineLarge = TextStyle(
             fontFamily = AppFonts.Baloo2,
-            fontWeight = FontWeight.Bold,
-            fontSize = 28.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = FontSizes.Subtitle,
             color = PrimaryColor
         ),
 
         titleLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Bold,
-            fontSize = FontSizes.Large,
+            fontSize = FontSizes.Header,
             color = PrimaryColor
         ),
 
         bodyLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Normal,
-            fontSize = FontSizes.Large,
+            fontSize = FontSizes.Subheader,
             color = TextBodyColor
         ),
 
         bodyMedium = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Normal,
-            fontSize = FontSizes.Medium,
+            fontSize = FontSizes.Body,
             color = TextBodyColor
         ),
 
         bodySmall = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Light,
-            fontSize = FontSizes.Small,
+            fontSize = FontSizes.Emphasis,
             color = TextBodyColor
         ),
 
         labelLarge = TextStyle(
             fontFamily = AppFonts.Nunito,
             fontWeight = FontWeight.Bold,
-            fontSize = FontSizes.Large,
+            fontSize = FontSizes.Subheader,
             color = TextBodyColor
         ),
     )
